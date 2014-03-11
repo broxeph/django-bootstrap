@@ -19,7 +19,7 @@ def fullsplit(path, result=None):
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-package_dir = "bootstrap"
+package_dir = "django_bootstrap"
 
 packages = []
 for dirpath, dirnames, filenames in os.walk(package_dir):
@@ -46,9 +46,9 @@ setup(
     description = 'Twitter Bootstrap ready Django forms.',
     long_description=read('README.mkd'),
     author='Earle Ady',
-    packages = ['bootstrap',],
+    packages = ['django_bootstrap',],
     package_data = package_data,
-    version = '0.1.0',
+    version = '0.1.1',
     url='http://github.com/earle/django-bootstrap',
     keywords=[],
     license='Apache 2.0',
