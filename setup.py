@@ -1,6 +1,7 @@
 import os
 from distutils.core import setup
 
+import django_bootstrap
 
 def fullsplit(path, result=None):
     """
@@ -42,13 +43,13 @@ package_data = dict(
 )
 
 setup(
-    name = 'django-bootstrap-mega',
-    description = 'Twitter Bootstrap ready Django forms.',
+    name='django-bootstrap-mega',
+    description='Twitter Bootstrap ready Django forms.',
     long_description=read('README.mkd'),
     author='Chris Spencer',
-    packages = ['django_bootstrap',],
-    package_data = package_data,
-    version = '0.1.2',
+    packages=['django_bootstrap',],
+    package_data=package_data,
+    version=django_bootstrap.__version__,
     url='http://github.com/chrisspen/django-bootstrap',
     keywords=[],
     license='Apache 2.0',
@@ -59,4 +60,6 @@ setup(
       'Topic :: Internet :: WWW/HTTP :: WSGI',
       'Framework :: Django',
     ],
+    zip_safe=False,
+    install_requires=['Django>=1.4'],
 )
