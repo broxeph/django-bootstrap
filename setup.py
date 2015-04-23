@@ -42,14 +42,14 @@ package_data = dict(
 )
 
 setup(
-    name = 'django-bootstrap',
+    name = 'django-bootstrap-mega',
     description = 'Twitter Bootstrap ready Django forms.',
     long_description=read('README.mkd'),
-    author='Earle Ady',
+    author='Chris Spencer',
     packages = ['django_bootstrap',],
     package_data = package_data,
     version = '0.1.2',
-    url='http://github.com/earle/django-bootstrap',
+    url='http://github.com/chrisspen/django-bootstrap',
     keywords=[],
     license='Apache 2.0',
     classifiers=[
