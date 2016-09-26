@@ -122,6 +122,12 @@ class BootstrapMixin(object):
             else:
                 help_text = u''
 
+            try:
+                # Django <= 1.5
+                auto_id = bf._auto_id()
+            except AttributeError:
+                auto_id = bf.auto_id
+
             field_hash = {
                 'class' : mark_safe(css_class),
                 'label' : mark_safe(bf.label or ''),
@@ -131,7 +137,7 @@ class BootstrapMixin(object):
                 'bf_raw' : bf,
                 'errors' : mark_safe(bf_errors),
                 'field_type' : mark_safe(field.__class__.__name__),
-                'label_id': bf._auto_id(),
+                'label_id': auto_id,
             }
 
             if self.custom_fields.has_key(field):
