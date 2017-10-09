@@ -148,7 +148,7 @@ class BootstrapMixin(object):
                     os.path.join(self.template_base, 'field_default.html'), ])
 
             # Finally render the field
-            output = template.render(Context(field_hash))
+            output = template.render(field_hash)
 
         return mark_safe(output)
 

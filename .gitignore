@@ -6,3 +6,5 @@ build/
 /.project
 /.pydevproject
 /dist/
+*.out
+*.geany
