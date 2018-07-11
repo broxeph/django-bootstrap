@@ -7,12 +7,14 @@ Replace this with more appropriate tests for your application.
 
 from django.test import TestCase
 from django import forms
-from forms import BootstrapForm, Fieldset
+
+from .forms import BootstrapForm, Fieldset
+
 
 class LoginForm(BootstrapForm):
     class Meta:
         layout = (
-            Fieldset("Please Login", "username", "password", ),
+            Fieldset("Please Login", "username", "password"),
         )
 
     username = forms.CharField(max_length=100)
@@ -35,7 +37,8 @@ class FormTests(TestCase):
         """
         Tests that fieldsets are rendered properly.
         """
-        expected = """<fieldset class="please_login"><legend>Please Login</legend><div id="div_id_username" class="control-group">
+        expected = """<fieldset class="please_login"><legend>Please Login</legend>
+        <div id="div_id_username" class="control-group">
     <label class="control-label" for="id_username">Username</label>
     <div class="controls">
         <input id="id_username" type="text" name="username" maxlength="100" />
@@ -59,7 +62,8 @@ class FormTests(TestCase):
         """
         Tests that inline help spans are rendered properly.
         """
-        expected = """<fieldset class="please_login"><legend>Please Login</legend><div id="div_id_username" class="control-group">
+        expected = """<fieldset class="please_login"><legend>Please Login</legend>
+        <div id="div_id_username" class="control-group">
     <label class="control-label" for="id_username">Username</label>
     <div class="controls">
         <input id="id_username" type="text" name="username" maxlength="100" />

@@ -1,17 +1,17 @@
 import os
-from django.template import Context,RequestContext
+
 from django.template.loader import get_template, select_template
 from django.utils.safestring import mark_safe
-from django.utils.html import escape
 from django import forms
 from django.utils.encoding import force_unicode
+
 
 class NoSuchFormField(Exception):
     """""The form field couldn't be resolved."""""
     pass
 
-class BootstrapMixin(object):
 
+class BootstrapMixin(object):
     def __init__(self, *args, **kwargs):
         super(BootstrapMixin, self).__init__(*args, **kwargs)
         if hasattr(self, 'Meta') and hasattr(self.Meta, 'custom_fields'):
@@ -45,7 +45,7 @@ class BootstrapMixin(object):
             return self.Meta.layout
         else:
             # Construct a simple layout using the keys from the fields
-            return self.fields.keys()
+            return list(self.fields.keys())
 
     def as_div(self):
         """ Render the form as a set of <div>s. """
@@ -58,15 +58,14 @@ class BootstrapMixin(object):
         if self.top_errors:
             errors = self.top_errors_as_html()
         else:
-            errors = u''
+            errors = ''
 
-        prefix = u''.join(self.prefix_fields)
+        prefix = ''.join(self.prefix_fields)
 
         return mark_safe(prefix + errors + output)
 
-    def render_fields(self, fields, separator=u""):
+    def render_fields(self, fields, separator=""):
         """ Render a list of fields and join the fields by the value in separator. """
-
         output = []
 
         for field in fields:
@@ -80,7 +79,6 @@ class BootstrapMixin(object):
 
     def render_field(self, field):
         """ Render a named field to HTML. """
-
         try:
             field_instance = self.fields[field]
         except KeyError:
@@ -100,7 +98,7 @@ class BootstrapMixin(object):
 
         if bf.is_hidden:
             # If the field is hidden, add it at the top of the form
-            self.prefix_fields.append(unicode(bf))
+            self.prefix_fields.append(str(bf))
 
             # If the hidden field has errors, append them to the top_errors
             # list which will be printed out at the top of form
@@ -110,7 +108,8 @@ class BootstrapMixin(object):
         else:
 
             # Find field + widget type css classes
-            css_class = type(field_instance).__name__ + " " +  type(field_instance.widget).__name__
+            css_class = type(field_instance).__name__ + " " +  type(
+                field_instance.widget).__name__
 
             # Add an extra class, Required, if applicable
             if field_instance.required:
@@ -118,33 +117,31 @@ class BootstrapMixin(object):
 
             if field_instance.help_text:
                 # The field has a help_text, construct <span> tag
-                help_text = '<span class="help-%s">%s</span>' % (self.help_style, force_unicode(field_instance.help_text))
+                help_text = '<span class="help-%s">%s</span>' % (
+                    self.help_style, force_unicode(field_instance.help_text))
             else:
-                help_text = u''
+                help_text = ''
 
-            try:
-                # Django <= 1.5
-                auto_id = bf._auto_id()
-            except AttributeError:
-                auto_id = bf.auto_id
+            auto_id = bf.auto_id
 
             field_hash = {
                 'class' : mark_safe(css_class),
                 'label' : mark_safe(bf.label or ''),
                 'help_text' :mark_safe(help_text),
                 'field' : field_instance,
-                'bf' : mark_safe(unicode(bf)),
+                'bf' : mark_safe(str(bf)),
                 'bf_raw' : bf,
                 'errors' : mark_safe(bf_errors),
                 'field_type' : mark_safe(field.__class__.__name__),
                 'label_id': auto_id,
             }
 
-            if self.custom_fields.has_key(field):
+            if field in self.custom_fields:
                 template = get_template(self.custom_fields[field])
             else:
                 template = select_template([
-                    os.path.join(self.template_base, 'field_%s.html' % type(field_instance.widget).__name__.lower()),
+                    os.path.join(self.template_base, 'field_%s.html' % type(
+                        field_instance.widget).__name__.lower()),
                     os.path.join(self.template_base, 'field_default.html'), ])
 
             # Finally render the field
@@ -167,13 +164,13 @@ class BootstrapModelForm(BootstrapMixin, forms.ModelForm):
 
 class Fieldset(object):
     """ Fieldset container. Renders to a <fieldset>. """
-
     def __init__(self, legend, *fields, **kwargs):
         self.legend = legend
         self.fields = fields
         self.css_class = kwargs.get('css_class', '_'.join(legend.lower().split()))
 
     def as_html(self, form):
-        legend_html = self.legend and (u'<legend>%s</legend>' % self.legend) or ''
-        return u'<fieldset class="%s">%s%s</fieldset>' % (self.css_class, legend_html, form.render_fields(self.fields))
+        legend_html = self.legend and ('<legend>%s</legend>' % self.legend) or ''
+        return '<fieldset class="%s">%s%s</fieldset>' % (
+            self.css_class, legend_html, form.render_fields(self.fields))
 
