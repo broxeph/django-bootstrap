@@ -64,7 +64,7 @@ class BootstrapMixin(object):
 
         return mark_safe(prefix + errors + output)
 
-    def render_fields(self, fields, separator=""):
+    def render_fields(self, fields, separator=''):
         """ Render a list of fields and join the fields by the value in separator. """
         output = []
 
@@ -74,8 +74,7 @@ class BootstrapMixin(object):
             else:
                 output.append(self.render_field(field))
 
-
-        return separator.join(output)
+        return force_unicode(separator.join(output))
 
     def render_field(self, field):
         """ Render a named field to HTML. """
@@ -108,7 +107,7 @@ class BootstrapMixin(object):
         else:
 
             # Find field + widget type css classes
-            css_class = type(field_instance).__name__ + " " +  type(
+            css_class = type(field_instance).__name__ + " " + type(
                 field_instance.widget).__name__
 
             # Add an extra class, Required, if applicable
@@ -125,15 +124,15 @@ class BootstrapMixin(object):
             auto_id = bf.auto_id
 
             field_hash = {
-                'class' : mark_safe(css_class),
-                'label' : mark_safe(bf.label or ''),
-                'help_text' :mark_safe(help_text),
-                'field' : field_instance,
-                'bf' : mark_safe(str(bf)),
-                'bf_raw' : bf,
-                'errors' : mark_safe(bf_errors),
-                'field_type' : mark_safe(field.__class__.__name__),
-                'label_id': auto_id,
+                'class': mark_safe(css_class),
+                'label': mark_safe(bf.label or ''),
+                'help_text': mark_safe(help_text),
+                'field': field_instance,
+                'bf': mark_safe(force_unicode(bf)),
+                'bf_raw': bf,
+                'errors': mark_safe(bf_errors),
+                'field_type': mark_safe(field.__class__.__name__),
+                'label_id': auto_id
             }
 
             if field in self.custom_fields:
@@ -164,6 +163,7 @@ class BootstrapModelForm(BootstrapMixin, forms.ModelForm):
 
 class Fieldset(object):
     """ Fieldset container. Renders to a <fieldset>. """
+
     def __init__(self, legend, *fields, **kwargs):
         self.legend = legend
         self.fields = fields
@@ -173,4 +173,3 @@ class Fieldset(object):
         legend_html = self.legend and ('<legend>%s</legend>' % self.legend) or ''
         return '<fieldset class="%s">%s%s</fieldset>' % (
             self.css_class, legend_html, form.render_fields(self.fields))
-
