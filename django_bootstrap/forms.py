@@ -3,7 +3,10 @@ import os
 from django.template.loader import get_template, select_template
 from django.utils.safestring import mark_safe
 from django import forms
-from django.utils.encoding import force_unicode
+try:
+    from django.utils.encoding import force_unicode
+except ImportError:
+    force_unicode = str
 
 
 class NoSuchFormField(Exception):
