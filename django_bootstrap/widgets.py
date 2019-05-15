@@ -1,7 +1,10 @@
 from django.forms.widgets import Input, RadioSelect, TextInput
 from django.utils.html import conditional_escape
-from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
+try:
+    from django.utils.encoding import force_unicode
+except ImportError:
+    force_unicode = str
 
 
 class OptionsRadioInput(RadioSelect):
