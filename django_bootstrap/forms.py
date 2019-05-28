@@ -154,6 +154,9 @@ class BootstrapMixin(object):
     def __unicode__(self):
         # Default output is now as <div> tags.
         return self.as_div()
+    
+    def __str__(self):
+        return self.__unicode__()
 
 
 class BootstrapForm(BootstrapMixin, forms.Form):
